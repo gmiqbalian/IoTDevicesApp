@@ -13,12 +13,14 @@ public partial class MainWindow : Window
 {
     private readonly NetworkService _networkService;
     private readonly DeviceManager _deviceManager;
+    private readonly TwinCollection _twinCollection;
     public MainWindow(NetworkService networkService, DeviceManager deviceManager)
     {
         InitializeComponent();
 
         _networkService = networkService;
         _deviceManager = deviceManager;
+        _twinCollection = new TwinCollection();
 
         Task.WhenAll(GetConnectionStatusAsync(),
                 UpdateTwin(),
@@ -37,12 +39,14 @@ public partial class MainWindow : Window
             {
                 device.Begin();
                 state = "ON";
+                await _deviceManager.UpdateTwinPropsAsync(_twinCollection["state"] = "ON");
                 DeviceState.Text = $"{state}";
             }
             else
             {
                 device.Stop();
                 state = "OFF";
+                await _deviceManager.UpdateTwinPropsAsync(_twinCollection["state"] = "OFF");
                 DeviceState.Text = $"{state}";
             }
 
@@ -67,12 +71,11 @@ public partial class MainWindow : Window
     }
     private async Task UpdateTwin()
     {
-        var twincollection = new TwinCollection();
-        twincollection["deviceType"] = "wpf";
-        twincollection["deviceName"] = "washingmachine";
-        twincollection["location"] = "washroom";
+        _twinCollection["deviceType"] = "wpf";
+        _twinCollection["deviceName"] = "washingmachine";
+        _twinCollection["location"] = "washroom";
 
-        await _deviceManager.UpdateTwinPropsAsync(twincollection);
+        await _deviceManager.UpdateTwinPropsAsync(_twinCollection);
     }
     private async Task SendTelemetryDataToCloud()
     {

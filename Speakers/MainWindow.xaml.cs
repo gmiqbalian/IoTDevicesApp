@@ -12,8 +12,9 @@ namespace Speakers;
 
 public partial class MainWindow : Window
 {
-    private NetworkService _networkService;
-    private DeviceManager _deviceManager;
+    private readonly NetworkService _networkService;
+    private readonly DeviceManager _deviceManager;
+    private readonly TwinCollection _twinCollection;
 
     public MainWindow(NetworkService networkService, DeviceManager deviceManager, IConfiguration configuration)
     {
@@ -22,6 +23,7 @@ public partial class MainWindow : Window
 
         _networkService = networkService;
         _deviceManager = deviceManager;
+        _twinCollection = new TwinCollection();
 
         Task.WhenAll(GetConnectionStatusAsync(),
             UpdateTwinToCloud(),
@@ -46,12 +48,12 @@ public partial class MainWindow : Window
     }
     private async Task UpdateTwinToCloud()
     {
-        var twincollection = new TwinCollection();
-        twincollection["deviceType"] = "wpf";
-        twincollection["deviceName"] = "speakers";
-        twincollection["location"] = "lounge";
 
-        await _deviceManager.UpdateTwinPropsAsync(twincollection);
+        _twinCollection["deviceType"] = "WPF";
+        _twinCollection["deviceName"] = "Speakers";
+        _twinCollection["location"] = "Lounge";
+
+        await _deviceManager.UpdateTwinPropsAsync(_twinCollection);
     }
     private async Task SendTelemetryDataToCloud()
     {
@@ -81,12 +83,14 @@ public partial class MainWindow : Window
             {
                 device.Begin();
                 state = "ON";
+                //await _deviceManager.UpdateTwinPropsAsync(_twinCollection["state"] = "ON");
                 DeviceState.Text = $"{state}";
-            }
-            else
+            } 
+            else if(!_deviceManager.IsSendingAllowed)
             {
                 device.Stop();
                 state = "OFF";
+                //await _deviceManager.UpdateTwinPropsAsync(_twinCollection["state"] = "OFF");
                 DeviceState.Text = $"{state}";
             }
 

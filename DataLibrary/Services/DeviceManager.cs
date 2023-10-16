@@ -99,13 +99,13 @@ public class DeviceManager
             {
                 case "start":
                     IsSendingAllowed = true;
-                    twinCollection["state"] = "active";
+                    twinCollection["state"] = "ON";
                     await _deviceClient!.UpdateReportedPropertiesAsync(twinCollection);
                     break;
 
                 case "stop":
                     IsSendingAllowed = false;
-                    twinCollection["state"] = "inactive";
+                    twinCollection["state"] = "OFF";
                     await _deviceClient!.UpdateReportedPropertiesAsync(twinCollection);
                     break;
 

@@ -13,15 +13,17 @@ public partial class MainWindow : Window
 {
     private readonly DeviceManager _deviceManager;
     private readonly NetworkService _networkService;
+    private readonly TwinCollection _twinCollection;
     public MainWindow(DeviceManager deviceManager, NetworkService networkService)
     {
         InitializeComponent();
 
         _deviceManager = deviceManager;
         _networkService = networkService;
+        _twinCollection = new TwinCollection();
 
         Task.WhenAll(GetConnectionStatusAsync(),
-            UpdateTwin(),
+            UpdateDeviceTwin(),
             _deviceManager.RegisterDirectMethodsToCloud(),
             SendTelemetryDataToCloud(),
             ToggleDeviceState());
@@ -36,6 +38,7 @@ public partial class MainWindow : Window
             {
                 device.Begin();
                 MusicIcon.Visibility = Visibility.Visible;
+                await _deviceManager.UpdateTwinPropsAsync(_twinCollection["state"] = "ON");
                 state = "ON";
                 DeviceState.Text = $"{state}";
             }
@@ -44,6 +47,7 @@ public partial class MainWindow : Window
                 device.Stop();
                 MusicIcon.Visibility = Visibility.Collapsed;
                 state = "OFF";
+                await _deviceManager.UpdateTwinPropsAsync(_twinCollection["state"] = "OFF");
                 DeviceState.Text = $"{state}";
             }
 
@@ -51,14 +55,13 @@ public partial class MainWindow : Window
         }
 
     }
-    private async Task UpdateTwin()
+    private async Task UpdateDeviceTwin()
     {
-        var twincollection = new TwinCollection();
-        twincollection["deviceType"] = "wpf";
-        twincollection["deviceName"] = "television";
-        twincollection["location"] = "lounge";
+        _twinCollection["deviceType"] = "WPF";
+        _twinCollection["deviceName"] = "Television";
+        _twinCollection["location"] = "Lounge";
 
-        await _deviceManager.UpdateTwinPropsAsync(twincollection);
+        await _deviceManager.UpdateTwinPropsAsync(_twinCollection);
     }
     private async Task GetConnectionStatusAsync()
     {
