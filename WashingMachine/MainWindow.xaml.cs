@@ -87,7 +87,7 @@ public partial class MainWindow : Window
                     Time = DateTime.Now.ToString("HH:mm:ss")
                 };
 
-                await _deviceManager.SendTelemetryDataAsync(JsonConvert.SerializeObject(payload), 5000);
+                await _deviceManager.SendTelemetryDataAsync(JsonConvert.SerializeObject(payload));
                 CloudMessage.Text = $"WaterLevel: {payload.WaterLevel}\nWaterTemp: {payload.WaterTemp}\nTime: {payload.Time}";
             }
         }

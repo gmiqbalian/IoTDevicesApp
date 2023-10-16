@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices" Version="1.39.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventHubs" Version="5.5.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.14.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="7.0.12" />

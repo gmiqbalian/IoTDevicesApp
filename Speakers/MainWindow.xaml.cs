@@ -66,7 +66,7 @@ public partial class MainWindow : Window
                     Time = DateTime.Now.ToString("HH:mm:ss")
                 };
 
-                await _deviceManager.SendTelemetryDataAsync(JsonConvert.SerializeObject(payload), 10000);
+                await _deviceManager.SendTelemetryDataAsync(JsonConvert.SerializeObject(payload));
                 CloudMessage.Text = $"Volume: {payload.Volume}\nBattery: {payload.Battery}\nTime: {payload.Time}";
             }
         }

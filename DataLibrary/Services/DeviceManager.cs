@@ -16,7 +16,7 @@ public class DeviceManager
     public bool IsSendingAllowed { get; set; } = true;
     public bool IsConfigured;
     public bool MethodRegistered;
-    private int _telemetryInterval = 5000; //default is set to 5 seconds
+    private int _telemetryInterval = 10000; //default is set to 10 seconds
     private readonly IServiceProvider? _serviceProvider;
     public readonly DataContext _dbcontext = null!;
 
@@ -74,7 +74,7 @@ public class DeviceManager
             await _deviceClient!.SendEventAsync(messageToCloud);
         }
     }
-    public async Task SendTelemetryDataAsync(string payload, int interval)
+    public async Task SendTelemetryDataAsync(string payload)
     {
         if (IsConfigured)
         {
