@@ -1,0 +1,58 @@
+﻿<Window x:Class="Television.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Television"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <TextBlock  
+                   FontFamily="{StaticResource FontAwesome-Regular}"
+                   Text="&#xf26c;" Style="{StaticResource DeviceIcon}"/>
+
+            <TextBlock FontFamily="{StaticResource FontAwesome-Solid}" 
+                   x:Name="MusicIcon"
+                   Text="&#xf001;"
+                   FontSize="60"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="-15 -30 0 0"
+                   Visibility="Hidden">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform x:Name="ShakeIcon" X="0" Y="0"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel>
+                <TextBlock x:Name="ConnectivityStatus" Style="{StaticResource ConnectivityStatus}" />
+                <TextBlock x:Name="DeviceState" Style="{StaticResource DeviceState}" />
+                <TextBlock x:Name="CloudMessage" Style="{StaticResource CloudMessage}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+    <Window.Resources>
+        <Storyboard x:Key="TvStoryboard" RepeatBehavior="Forever">
+            <DoubleAnimation
+        Storyboard.TargetName="ShakeIcon" 
+        Storyboard.TargetProperty="X"
+        From="0" To="-5"
+        AutoReverse="True" Duration="0:0:0.1" />
+
+            <DoubleAnimation
+        Storyboard.TargetName="ShakeIcon"
+        Storyboard.TargetProperty="Y"
+        From="0" To="-5" AutoReverse="True" Duration="0:0:0.1" />
+        </Storyboard>
+    </Window.Resources>
+</Window>
