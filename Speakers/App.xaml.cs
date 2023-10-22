@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Configuration;
 using System.Windows;
 
 namespace Speakers;
 
 public partial class App : Application
 {
-    private static IHost? _speakerAppHost { get; set; }
+    private static IHost? _speakerAppHost;
     public App()
     {
         _speakerAppHost = Host.CreateDefaultBuilder()
@@ -20,13 +21,12 @@ public partial class App : Application
             })
             .ConfigureServices((config, services) =>
             {
-                services.AddDbContext<DataContext>(x => x.UseSqlite("Data Source=Database.sqlite.db"));
+                services.AddDbContext<DataContext>(x => x.UseSqlite("Data Source=mydatabase.sqlite.db"));
 
+                services.AddSingleton<Configuration>();
                 services.AddSingleton<MainWindow>();
                 services.AddSingleton<NetworkService>();
-                services.AddSingleton(new DeviceManager(
-                    config.Configuration.GetConnectionString("apiurl")!,
-                    "speakers"));
+                services.AddSingleton<DeviceManager>();
             })
             .Build();
     }

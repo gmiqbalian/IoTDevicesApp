@@ -4,39 +4,45 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
-namespace Television;
-
-public partial class App : Application
+namespace Television
 {
-    public static IHost? _tvAppHost { get; set; }
-    public App()
+    public partial class App : Application
     {
-        _tvAppHost = Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration(config =>
-            {
-                config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            })
-            .ConfigureServices((config, services) =>
-            {
-                services.AddDbContext<DataContext>(x => x.UseSqlite("Data Source=Database.sqlite.db"));
+        private static IHost? _tvAppHost;
+        public App()
+        {
+            _tvAppHost = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration(config =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                })
+                .ConfigureServices((config, services) =>
+                {
+                    services.AddDbContext<DataContext>(x => x.UseSqlite("Data Source=mydatabase.sqlite.db"));
 
-                services.AddSingleton<MainWindow>();
-                services.AddSingleton<NetworkService>();
-                services.AddSingleton(new DeviceManager(
-                    config.Configuration.GetConnectionString("apiurl")!,
-                    "tv"));
-            })
-            .Build();
-    }
-    protected override async void OnStartup(StartupEventArgs e)
-    {
-        await _tvAppHost!.StartAsync();
+                    services.AddSingleton<Configuration>();
+                    services.AddSingleton<MainWindow>();
+                    services.AddSingleton<NetworkService>();
+                    services.AddSingleton<DeviceManager>();
+                })
+                .Build();
+        }
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            await _tvAppHost!.StartAsync();
 
-        var mainWindow = _tvAppHost.Services.GetRequiredService<MainWindow>();
-        mainWindow.Show();
+            var mainWindow = _tvAppHost.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
 
-        base.OnStartup(e);
+            base.OnStartup(e);
+        }
     }
 }

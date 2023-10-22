@@ -1,5 +1,6 @@
 ﻿using DataLibrary.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace DataLibrary.Contexts;
@@ -24,9 +25,6 @@ public class DataContext : DbContext
         }
         catch (Exception ex) { Debug.WriteLine(ex.Message); };
     }
-    public DbSet<DeviceConfig> DeviceConfiguration { get; set; }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Data Source=Database.sqlite.db");
-    }
+    public DbSet<DeviceConfig> DeviceConfig { get; set; }
+
 }

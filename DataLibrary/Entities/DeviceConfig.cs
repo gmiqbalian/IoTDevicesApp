@@ -5,9 +5,9 @@ namespace DataLibrary.Entities
     public class DeviceConfig
     {
         [Key]
-        public string DeviceId { get; set; } = null!;
+        public string? Id { get; set; }
         public string ConnectionString { get; set; } = null!;
-        public string? InstalledIn { get; set; }
         public string? Type { get; set; }
+        public string? Location { get; set; }
     }
 }

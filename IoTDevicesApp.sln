@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{CF8BE06F-35A6-42D0-9E84-95ED30DA1C67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{CF8BE06F-35A6-42D0-9E84-95ED30DA1C67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLibrary", "DataLibrary\DataLibrary.csproj", "{06AFE326-261E-4ADC-9286-B2A31FBD2F03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLibrary", "DataLibrary\DataLibrary.csproj", "{06AFE326-261E-4ADC-9286-B2A31FBD2F03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speakers", "Speakers\Speakers.csproj", "{13439934-D15A-4B6F-949C-EA103D703585}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Speakers", "Speakers\Speakers.csproj", "{13439934-D15A-4B6F-949C-EA103D703585}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfResourcesLibrary", "WpfResourcesLibrary\WpfResourcesLibrary.csproj", "{2ED07E48-E8E0-4A27-B2D9-EFDF84800A34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfResourcesLibrary", "WpfResourcesLibrary\WpfResourcesLibrary.csproj", "{2ED07E48-E8E0-4A27-B2D9-EFDF84800A34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Television", "Television\Television.csproj", "{0E2541AB-EC93-461C-A2E2-1902406874D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WashingMachine", "WashingMachine\WashingMachine.csproj", "{7B0D000C-F1C2-4AE9-90FC-3261B5C89EA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WashingMachine", "WashingMachine\WashingMachine.csproj", "{7B0D000C-F1C2-4AE9-90FC-3261B5C89EA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Television", "Television\Television.csproj", "{F0528F1D-87B2-4473-A884-191B80FD13A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +37,14 @@ Global
 		{2ED07E48-E8E0-4A27-B2D9-EFDF84800A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ED07E48-E8E0-4A27-B2D9-EFDF84800A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ED07E48-E8E0-4A27-B2D9-EFDF84800A34}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E2541AB-EC93-461C-A2E2-1902406874D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E2541AB-EC93-461C-A2E2-1902406874D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E2541AB-EC93-461C-A2E2-1902406874D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E2541AB-EC93-461C-A2E2-1902406874D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7B0D000C-F1C2-4AE9-90FC-3261B5C89EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B0D000C-F1C2-4AE9-90FC-3261B5C89EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B0D000C-F1C2-4AE9-90FC-3261B5C89EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B0D000C-F1C2-4AE9-90FC-3261B5C89EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0528F1D-87B2-4473-A884-191B80FD13A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0528F1D-87B2-4473-A884-191B80FD13A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0528F1D-87B2-4473-A884-191B80FD13A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0528F1D-87B2-4473-A884-191B80FD13A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

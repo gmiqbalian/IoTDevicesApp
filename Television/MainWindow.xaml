@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Television"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
+        Title="MainWindow" Height="450" Width="400
+        ">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -44,15 +45,15 @@
     <Window.Resources>
         <Storyboard x:Key="TvStoryboard" RepeatBehavior="Forever">
             <DoubleAnimation
-        Storyboard.TargetName="ShakeIcon" 
-        Storyboard.TargetProperty="X"
-        From="0" To="-5"
-        AutoReverse="True" Duration="0:0:0.1" />
+                 Storyboard.TargetName="ShakeIcon" 
+                 Storyboard.TargetProperty="X"
+                 From="0" To="-5"
+                 AutoReverse="True" Duration="0:0:0.1" />
 
             <DoubleAnimation
-        Storyboard.TargetName="ShakeIcon"
-        Storyboard.TargetProperty="Y"
-        From="0" To="-5" AutoReverse="True" Duration="0:0:0.1" />
+                 Storyboard.TargetName="ShakeIcon"
+                 Storyboard.TargetProperty="Y"
+                 From="0" To="-5" AutoReverse="True" Duration="0:0:0.1" />
         </Storyboard>
     </Window.Resources>
 </Window>

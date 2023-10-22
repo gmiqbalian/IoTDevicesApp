@@ -4,8 +4,11 @@ using DataLibrary.Models;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataLibrary.Services;
@@ -19,40 +22,43 @@ public class DeviceManager
     private int _telemetryInterval = 10000; //default is set to 10 seconds
     private readonly IServiceProvider? _serviceProvider;
     public readonly DataContext _dbcontext = null!;
-
-    public DeviceManager(string url, string deviceId)
+    private readonly IConfiguration _configuration;
+    public DeviceManager(DataContext dbcontext, IConfiguration configuration)
     {
-        _dbcontext = new DataContext();
-
-        Task.FromResult(ConfigureDevice(url, deviceId));
-
+        _dbcontext = dbcontext;
+        _configuration = configuration;
     }
-    public async Task ConfigureDevice(string url, string deviceId)
+    public async Task ConfigureDevice(string deviceId)
     {
         try
         {
-            var deviceConfig = await _dbcontext.DeviceConfiguration.FirstOrDefaultAsync();
+            var device = _dbcontext.DeviceConfig
+                .FirstOrDefault(x => x.Id == deviceId);
 
-            if (deviceConfig is null)
+            if (device is null)
             {
                 using var http = new HttpClient();
-                var result = await http.PostAsync(url,
+                var result = await http.PostAsync(_configuration.GetConnectionString("apiurl"),
                     new StringContent(JsonConvert.SerializeObject(new { deviceId = deviceId })));
 
-                deviceConfig ??= new DeviceConfig();
+                device ??= new DeviceConfig();
 
                 if (result.IsSuccessStatusCode)
                 {
                     var connectionString = await result.Content.ReadAsStringAsync();
-                    deviceConfig.ConnectionString = connectionString;
-                    deviceConfig.DeviceId = deviceId;
-
-                    await _dbcontext.DeviceConfiguration.AddAsync(deviceConfig);
-                    await _dbcontext.SaveChangesAsync();
+                    device.ConnectionString = connectionString;
+                    device.Id = deviceId;
                 }
+                if (_dbcontext.DeviceConfig.Any(d => d.Id == device.Id))
+                    _dbcontext.DeviceConfig.Update(device);
+                else
+                    await _dbcontext.DeviceConfig.AddAsync(device);
+
+                await _dbcontext.SaveChangesAsync();
+
             }
 
-            _deviceClient = DeviceClient.CreateFromConnectionString(deviceConfig.ConnectionString, TransportType.Mqtt);
+            _deviceClient = DeviceClient.CreateFromConnectionString(device!.ConnectionString, TransportType.Mqtt);
             IsConfigured = true;
         }
         catch (Exception ex)
@@ -85,8 +91,12 @@ public class DeviceManager
     }
     public async Task RegisterDirectMethodsToCloud()
     {
-        if (IsConfigured)
-            await _deviceClient!.SetMethodDefaultHandlerAsync(MethodResponseCallback, null!);
+        try
+        {
+            if (IsConfigured)
+                await _deviceClient!.SetMethodDefaultHandlerAsync(MethodResponseCallback, null!);
+        }
+        catch (Exception e) { Debug.WriteLine(e.Message); }
     }
     private async Task<MethodResponse> MethodResponseCallback(MethodRequest req, object userContext)
     {
