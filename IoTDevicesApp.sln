@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfResourcesLibrary", "WpfR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WashingMachine", "WashingMachine\WashingMachine.csproj", "{7B0D000C-F1C2-4AE9-90FC-3261B5C89EA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Television", "Television\Television.csproj", "{F0528F1D-87B2-4473-A884-191B80FD13A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Television", "Television\Television.csproj", "{F0528F1D-87B2-4473-A884-191B80FD13A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

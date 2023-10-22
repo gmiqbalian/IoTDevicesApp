@@ -27,8 +27,8 @@ public class GetDeviceFromCloud
         try
         {
             var response = req.CreateResponse(HttpStatusCode.OK);
-
             var deviceIdFromUrl = req.Query["deviceId"];
+
             if (!string.IsNullOrEmpty(deviceIdFromUrl))
             {
                 var device = await _registryManager.GetDeviceAsync(deviceIdFromUrl);

@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.Json.Nodes;
 
 namespace DataLibrary.Services;
 
@@ -136,11 +137,18 @@ public class DeviceManager
             return new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(reponseToCloud)), 400);
         }
     }
-    private async Task<Twin> ReadDesiredPropertiesAsync()
+    public async Task<LatestCloudMessage> GetLatestMessageFromCloudAsync(string deviceId)
     {
-        var twin = await _deviceClient.GetTwinAsync();
-        if (twin is not null)
-            return twin;
+        var requestUri = $"{_configuration.GetConnectionString("deviceMsgUrl")}&deviceId={deviceId}";
+
+        using var httpClient = new HttpClient();
+
+        var result = await httpClient.GetAsync(requestUri);
+        var content = result.Content.ReadAsStringAsync().Result.ToString();
+        var latestMsg = JsonConvert.DeserializeObject<LatestCloudMessage>(content);
+        
+        if (result.IsSuccessStatusCode)
+            return latestMsg;
 
         return null!;
     }

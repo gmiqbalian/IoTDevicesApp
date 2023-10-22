@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +24,7 @@ namespace Television
         private readonly DeviceManager _deviceManager;
         private readonly NetworkService _networkService;
         private readonly TwinCollection _twinCollection;
+        private readonly Timer _timer;
         public MainWindow(DeviceManager deviceManager, NetworkService networkService)
         {
             InitializeComponent();
@@ -36,6 +38,10 @@ namespace Television
                 UpdateDeviceTwin(),
                 SendTelemetryDataToCloud(),
                 ToggleDeviceState());
+
+            _timer = new Timer(3000);
+            _timer.Elapsed += async (s, e) => await SaveLatestMessageToTwin();
+            _timer.Start();
         }
         private async Task StartDevice()
         {
@@ -110,6 +116,11 @@ namespace Television
                     CloudMessage.Text = $"Volume: {payload.Volume}\nBattery: {payload.Battery}\nChannel: {payload.Channel}\nTime: {payload.Time}";
                 }
             }
+        }
+        private async Task SaveLatestMessageToTwin()
+        {
+            _twinCollection["lastestMessage"] = await _deviceManager.GetLatestMessageFromCloudAsync("television");
+            await _deviceManager.UpdateTwinPropsAsync(_twinCollection);
         }
     }
 }

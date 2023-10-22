@@ -1,10 +1,12 @@
-﻿using DataLibrary.Entities;
+﻿using DataLibrary.Contexts;
+using DataLibrary.Entities;
 using DataLibrary.Services;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -16,6 +18,7 @@ namespace Speakers
         private readonly NetworkService _networkService;
         private readonly DeviceManager _deviceManager;
         private readonly TwinCollection _twinCollection;
+        private readonly Timer _timer;
         public MainWindow(NetworkService networkService, DeviceManager deviceManager, IConfiguration configuration)
         {
 
@@ -24,12 +27,18 @@ namespace Speakers
             _networkService = networkService;
             _deviceManager = deviceManager;
             _twinCollection = new TwinCollection();
-            
+            _timer = new Timer();
+
             Task.WhenAll(GetConnectionStatusAsync(),
                 StartDevice(),
                 UpdateTwinToCloud(),
                 SendTelemetryDataToCloud(),
-                ToggleDeviceState());
+                ToggleDeviceState(),
+                SaveLatestMessageToTwin());
+
+            _timer = new Timer(5000);
+            _timer.Elapsed += async (s, e) => await SaveLatestMessageToTwin();
+            _timer.Start();
         }
         private async Task StartDevice()
         {
@@ -98,6 +107,11 @@ namespace Speakers
 
                 await Task.Delay(1000);
             }
+        }
+        private async Task SaveLatestMessageToTwin()
+        {
+            _twinCollection["lastestMessage"] = await _deviceManager.GetLatestMessageFromCloudAsync("speakers");
+            await _deviceManager.UpdateTwinPropsAsync(_twinCollection);
         }
     }
 }
